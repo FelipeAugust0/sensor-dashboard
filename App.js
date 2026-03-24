@@ -11,31 +11,45 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [sensores, setSensores] = useState([]);
 
-  // Simula conexão com IoT
+  // Função para gerar sensores aleatórios
+  const gerarSensores = () => {
+    return Array.from({ length: 15 }, (_, i) => ({
+      id: i.toString(),
+      nome: `Sensor ${100 + i} - Linha de Montagem`,
+      tipo: i % 2 === 0 ? 'temperatura' : 'pressao',
+      valor:
+        i % 2 === 0
+          ? `${(Math.random() * 80 + 10).toFixed(2)} °C`
+          : `${(Math.random() * 80 + 10).toFixed(2)} Bar`,
+    }));
+  };
+
   useEffect(() => {
+    // Simula carregamento inicial
     setTimeout(() => {
+      setSensores(gerarSensores());
       setLoading(false);
     }, 3000);
+
+    // Atualização em tempo real
+    const intervalo = setInterval(() => {
+      setSensores(gerarSensores());
+    }, 3000);
+
+    return () => clearInterval(intervalo);
   }, []);
 
-  // Sensores fictícios
-  const sensores = Array.from({ length: 15 }, (_, i) => ({
-    id: i.toString(),
-    nome: `Sensor ${100 + i} - Linha de Montagem`,
-    valor:
-      i % 2 === 0
-        ? `${(Math.random() * 80 + 10).toFixed(2)} °C`
-        : `${(Math.random() * 80 + 10).toFixed(2)} Bar`,
-  }));
-
-  // Tela de carregamento
+  // Tela de loading
   if (loading) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#1565C0" />
-          <Text style={styles.loadingText}>Conectando ao sistema IoT...</Text>
+          <Text style={styles.loadingText}>
+            Conectando ao sistema IoT...
+          </Text>
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -45,7 +59,7 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
 
-        {/* Status da fábrica */}
+        {/* Header */}
         <ScrollView style={styles.header} horizontal>
           <View>
             <Text style={styles.titulo}>
@@ -60,7 +74,7 @@ export default function App() {
           </View>
         </ScrollView>
 
-        {/* Lista de sensores */}
+        {/* Lista */}
         <FlatList
           data={sensores}
           keyExtractor={(item) => item.id}
@@ -68,7 +82,16 @@ export default function App() {
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Text style={styles.nomeSensor}>{item.nome}</Text>
-              <Text style={styles.valorSensor}>{item.valor}</Text>
+              <Text
+                style={[
+                  styles.valorSensor,
+                  item.tipo === 'temperatura'
+                    ? styles.temp
+                    : styles.pressao,
+                ]}
+              >
+                {item.valor}
+              </Text>
             </View>
           )}
         />
@@ -119,7 +142,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-  // Card sensor
+  // Card
   card: {
     backgroundColor: '#fff',
     padding: 15,
@@ -135,6 +158,12 @@ const styles = StyleSheet.create({
   },
   valorSensor: {
     fontWeight: 'bold',
+  },
+
+  temp: {
     color: '#C62828',
+  },
+  pressao: {
+    color: '#1565C0',
   },
 });
