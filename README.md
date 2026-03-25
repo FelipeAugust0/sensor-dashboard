@@ -6,8 +6,7 @@ Protótipo de um **Dashboard** desenvolvido em React Native para supervisão de 
 
 * **Gerenciamento de Estado:** Uso de `useState` e `useEffect` para controlar o ciclo de vida da aplicação e simular o carregamento de dados em tempo real.
 * **Feedback Visual:** Implementação de `ActivityIndicator` centralizado para indicar o status de conexão ao sistema IoT durante os primeiros 3 segundos de execução.
-* **Componentes de Lista:** * `FlatList`: Otimizada para renderização de 15 sensores fictícios com identificação única e valores dinâmicos (Temperatura/Pressão).
-    * `ScrollView` horizontal: Utilizado no topo para exibição de informações fixas de status da unidade fabril.
+* **Componentes de Lista:** `FlatList`: Otimizada para renderização de 15 sensores fictícios com identificação única e valores dinâmicos (Temperatura/Pressão) e `ScrollView` horizontal, utilizado no topo para exibição de informações fixas de status da unidade fabril.
 * **Segurança e Layout:** Uso de `SafeAreaProvider` e `SafeAreaView` para garantir que a interface seja visível e não sofra cortes em diferentes modelos de dispositivos (notches e barras de sistema).
 * **Estilização:** Layout moderno utilizando sistema de cards, sombras (`elevation`) e separação visual clara entre nome do sensor e seu respectivo valor.
 
@@ -43,4 +42,4 @@ Protótipo de um **Dashboard** desenvolvido em React Native para supervisão de 
     npx start
 
 
-**** Desenvolvido por Felipe Augusto da Silva
+****Desenvolvido por Felipe Augusto da Silva
